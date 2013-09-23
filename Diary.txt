@@ -1,7 +1,9 @@
-# Diary for the IoT project
+# Diary for the IoT project 2013-14
 
-5 sept - Attend lecture - 2h
-12 sept - Read paper - 1h
-18 sept - Make presentation 2h
-19 sept - Attend lecture - 2h
-19 sept - install and read through manual 1h
+05 sept - H - Attend lecture - 2h
+12 sept - H - Read paper - 1h
+18 sept - H - Make presentation 2h
+19 sept - H - Attend lecture - 2h
+19 sept - H - install and read through manual 1h
+22 sept - H - Looked through "tutorial" http://www.slideshare.net/mathieu_lacage/ns3-tutorial - ?
+23 sept - H - Looked up smart pointers - ?
