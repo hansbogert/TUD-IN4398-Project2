@@ -1,13 +1,18 @@
-# Diary for the IoT project 2013-14
+= Diary for the IoT project 2013-'14
 
-05 sept - H - Attend lecture - 2h
-12 sept - H - Read paper - 1h
-18 sept - H - Make presentation 2h
-19 sept - H - Attend lecture - 2h
-19 sept - H - install and read through manual - 1h
-22 sept - H - Looked through "tutorial" http://www.slideshare.net/mathieu_lacage/ns3-tutorial - 1h
-23 sept - H - Looked up smart pointers - 0.5h
-23 sept - H - Looked at lecture/presentation of the slideshare link above - 1h
-25 sept - H - Initial install using apt (debian) not enough, followed: http://www.nsnam.org/docs/release/3.18/tutorial/html/getting-started.html#testing-ns-3. Hello World succeeded - 2h
-26 sept - H - First real example (besides the trivial hello-simulator). Followed: http://www.nsnam.org/docs/release/3.18/tutorial/html/conceptual-overview.html - 2h
-
+[options="header"]
+|===
+| Date    | Member | What                            | Duration
+| 05 sept | H      | Attend lecture                  | 2h
+| 12 sept | H      | Read paper                      | 2h
+| 18 sept | H      | Make presentation               | 3h
+| 19 sept | H      | Attend lecture                  | 2h
+| 19 sept | H      | install and read through manual | 1h
+| 22 sept | H      | Looked through "tutorial" http://www.slideshare.net/mathieu_lacage/ns3-tutorial | 1h
+| 23 sept | H      | Looked up smart pointers        | 0.5h
+| 23 sept | H      | Looked at lecture/presentation of the slideshare link above | 1.5h
+| 25 sept | H      | Initial install using apt (debian) not enough, followed: http://www.nsnam.org/docs/release/3.18/tutorial/html/getting-started.html#testing-ns-3. Hello World succeeded | 2h
+| 26 sept | H      | First real example (besides the trivial hello-simulator). Followed: http://www.nsnam.org/docs/release/3.18/tutorial/html/conceptual-overview.html | 2h
+| 28 sept | H      | Influencing scripts without recompiling (incl.http://www.nsnam.org/docs/release/3.18/tutorial/html/tweaking.html#using-command-line-arguments | 2h
+| *       | H      | Keeping Diary updates and form. | 0.5
+|===
