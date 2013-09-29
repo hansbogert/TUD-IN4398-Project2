@@ -8,11 +8,18 @@
 | 18 sept | H      | Make presentation               | 3h
 | 19 sept | H      | Attend lecture                  | 2h
 | 19 sept | H      | install and read through manual | 1h
-| 22 sept | H      | Looked through "tutorial" http://www.slideshare.net/mathieu_lacage/ns3-tutorial | 1h
+| 22 sept | H      | Looked through "tutorial" http://www.slideshare.net/mathieu_lacage/ns3-tutorial 
+                                                                         | 1h
 | 23 sept | H      | Looked up smart pointers        | 0.5h
-| 23 sept | H      | Looked at lecture/presentation of the slideshare link above | 1.5h
-| 25 sept | H      | Initial install using apt (debian) not enough, followed: http://www.nsnam.org/docs/release/3.18/tutorial/html/getting-started.html#testing-ns-3. Hello World succeeded | 2h
-| 26 sept | H      | First real example (besides the trivial hello-simulator). Followed: http://www.nsnam.org/docs/release/3.18/tutorial/html/conceptual-overview.html | 2h
-| 28 sept | H      | Influencing scripts without recompiling (incl.http://www.nsnam.org/docs/release/3.18/tutorial/html/tweaking.html#using-command-line-arguments | 2h
-| *       | H      | Keeping Diary updates and form. | 0.5
+| 23 sept | H      | Looked at lecture/presentation of the slideshare link above 
+                                                                         | 1.5h
+| 25 sept | H      | Initial install using apt (debian) not enough, followed: http://www.nsnam.org/docs/release/3.18/tutorial/html/getting-started.html#testing-ns-3. Hello World succeeded 
+                                                                         | 2h
+| 26 sept | H      | First real example (besides the trivial hello-simulator). Followed: http://www.nsnam.org/docs/release/3.18/tutorial/html/conceptual-overview.html 
+                     	     	     	                                 | 2h
+| 28 sept | H      | Influencing scripts without recompiling (incl.http://www.nsnam.org/docs/release/3.18/tutorial/html/tweaking.html#using-command-line-arguments 
+                                                                         | 2h
+| *       | H      | Keeping Diary updates and form. | 0.5h
+| 29 sept | H      | Making simple topologies and see callback prime example, http://www.nsnam.org/docs/release/3.18/tutorial/html/building-topologies.html 
+                                                                         | 2h
 |===
