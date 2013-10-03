@@ -1,0 +1,30 @@
+= Simulating the Energy Renewal of a Wireless Sensor Network with NS3
+
+== Introduction
+
+In this project we will describe the steps we took to simulate the
+proposed ideas in the paper:
+
+
+[quote, Liguang Xie & Yi Shi & Y. Thomas Hou & Hanif D. Sherali, http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=06153401]
+____
+
+Making Sensor Networks Immortal: An Energy-Renewal Approach With
+Wireless Power Transfer
+____ 
+
+The paper describes methods for recharging static sensors in an area
+by a dedicated robot which will move in the area to recharge the
+sensors. Its movement is dictated by an algorithm which is the novelty
+of the paper.
+
+The problem for the efficient moving of the robot in the area is
+NP-complete (it's trivially reducable, if not the same, to the
+travelling salesman problem [TSP]). 
+
+The main aim of this document is to simulate the scenario described by
+the paper using NS3. In the next chapter we will describe the paper in
+more detail to get the problem right. In chapter 3 and 4 we will
+describe how the concepts of the paper can be mapped to NS3 and handle
+the implementation. In chapter 5 we will handle the simulation
+results, followed by the conclusion.
