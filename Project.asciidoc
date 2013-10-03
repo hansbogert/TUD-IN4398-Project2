@@ -28,3 +28,13 @@ more detail to get the problem right. In chapter 3 and 4 we will
 describe how the concepts of the paper can be mapped to NS3 and handle
 the implementation. In chapter 5 we will handle the simulation
 results, followed by the conclusion.
+
+== Paper
+
+== Mapping the concepts to NS3
+
+== Implementation on NS3
+
+== Simulation results
+
+== Conclusion
