@@ -15,12 +15,13 @@ ____
 
 The paper describes methods for recharging static sensors in an area
 by a dedicated robot which will move in the area to recharge the
-sensors. Its movement is dictated by an algorithm which is the novelty
-of the paper.
+sensors. Its movement is dictated by the shortest hamiltonian path
+which is gotten through reducing the problem to the _TSP_ which is
+solved using linear programming.
 
-The problem for the efficient moving of the robot in the area is
-NP-complete (it's trivially reducable, if not the same, to the
-travelling salesman problem [TSP]). 
+The novelty of this paper is the optimization of the ratio of the
+robot idle time over its traveling time -- keeping in mind that this
+is more restrictive then the _TSP_ itself.
 
 The main aim of this document is to simulate the scenario described by
 the paper using NS3. In the next chapter we will describe the paper in
@@ -30,11 +31,70 @@ the implementation. In chapter 5 we will handle the simulation
 results, followed by the conclusion.
 
 == Paper
+=== Terminology
+Node/Sensor:: 
+    Used in the broad sense of Sensor-Networks, these nodes
+    work on batteries.
+
+WCV::
+    The robot which can perform the energy transfer.
+
+=== Solving the problem
+
+The problem of having 
+
+.Formulas:
+
+. dataflow
+. energy-consumption/radio model
+. arrival times
+. complete cycle, including vacation time of WCV
+. used energy should be charged in the same cycle, (per definition.)
+
+
 
 == Mapping the concepts to NS3
 
+=== Directly Mappable Models
+
+==== Mobility model for the WCV (charging robot)
+
+We'll have to device a new mobility model which actually does the
+simulation of the proposed solution to the shortest hamiltonian
+path. How the paper tries to solve this was explained in <<Paper>>
+
+=== Nodes
+
+Sensor Nodes correspond well to the generic notion of a node in NS3 
+
+
+=== Battery / Charging Model
+
+The nodes in the paper have a depletable battery, this can be
+simulated by using NS3's energy framework:
+http://www.nsnam.org/docs/release/3.10/manual/html/energy.html
+
+=== Data Routing
+
+Data routing will be according to the outcome of the algorithm in a
+hop-to-hop fashion. 
+
+=== Indirectly Mappable
+
+=== Location
+
+* location of the sensors which are needed for solving the relaxed TSP.
+* ...?
+
 == Implementation on NS3
 
+=== Hardcoded paper scenarios
+
+We will first implement the same scenario's described in the paper to 
+
+
 == Simulation results
+
+
 
 == Conclusion

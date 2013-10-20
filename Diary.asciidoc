@@ -25,4 +25,12 @@
 | 1-2 oct | H      | Finished tracing tutorial and rest of tutorial
                                                      | 2.5         
 | 3 oct   | H      | Beginning of Project doc        | 0.5
+| 3 oct   | H      | Lecture                         | 2
+| 7 oct   | H      | Some extra document             | 1
+| 8-10 oc | H      | Reread the paper in depth       | 3,5
+| 10      | H      | Lecture                         | 2
+| 11-14   | H      | How to integrate concorde       | 4
+| 15-17   | H      | Presentation + more reading     | 5
+| 17      | H      | lecture                         | 2              
+| 19-21   | H      | Make initial code for 50 sim    | 9
 |===
