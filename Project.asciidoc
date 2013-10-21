@@ -90,8 +90,19 @@ hop-to-hop fashion.
 
 === Hardcoded paper scenarios
 
-We will first implement the same scenario's described in the paper to 
+We will first implement the same scenario's described in the paper to get familiar with NS3
 
+=== Scenarios using NS3 models
+
+Now that we have hardcoded the scenario's described by the book, we
+will make additions to NS3 and add models that for example will provide:
+
+* *TspMobilityModel* - This mobility model will calculate the shortest
+   path depending on the nodes in the area.
+* *RechargingWaypointMobilityModel* - This model for the WCV will not
+   simply move again after a designated period, but only after a node
+   has been fully charged.
+* ...
 
 == Simulation results
 
