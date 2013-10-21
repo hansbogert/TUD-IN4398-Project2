@@ -102,10 +102,50 @@ will make additions to NS3 and add models that for example will provide:
 * *RechargingWaypointMobilityModel* - This model for the WCV will not
    simply move again after a designated period, but only after a node
    has been fully charged.
-* ...
+* *Layer2*-devices
+* *RadioEnergyModelPhyListener* - Using the above layer2 models we'll
+   have to listen to those devices' events and calculate energy
+   correspondingly.
+
+==== Tapping into the energy framework
+
+We'll take the control flow of the NS3's provided energy model of wifi as an example.
+
+So in a trivial case, you'll have the following snippet:
+
+[source,cc, numbered]
+----
+/* create some nodes */ 
+NodeContainer c;
+c.Create(5);
+ 
+/* energy source */
+BasicEnergySourceHelper basicSourceHelper;
+// configure energy source
+basicSourceHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (0.1));
+// install source
+EnergySourceContainer sources = basicSourceHelper.Install (c);
+/* device energy model */
+WifiRadioEnergyModelHelper radioEnergyHelper;
+// configure radio energy model
+radioEnergyHelper.Set ("TxCurrentA", DoubleValue (0.0174));
+// install device model
+DeviceEnergyModelContainer deviceModels = radioEnergyHelper.Install (devices, sources);
+----
+
+We can see in the Install method that the Helper is making a
+connection between NetDevices and EnergySources. The Helper creates
+WifiRadioEnergyModels which describe a listener which is then attached
+to the physical part of the WifiNetDeivce.
+
+In the paper's scenario we have to create such a RadioEnergyModel,
+which describes a listener for our simplified (non-wifi) wireless
+physical layer -- which listens to actual bits send and not calculate
+energy usage by time, the latter is the case of
+WifiRadioEnergyModel. The paper however expresses energy use in terms
+of bits send.
 
 == Simulation results
-
 
 
 == Conclusion
