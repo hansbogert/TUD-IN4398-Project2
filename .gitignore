@@ -1,3 +1,11 @@
+#Generated
 *.html
+Project*.png
+
+#Backups
 *~
+*\#*\#
+.#*
+
+#simply ignore
 papers/*
