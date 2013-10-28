@@ -39,6 +39,11 @@ Node/Sensor::
 WCV::
     The robot which can perform the energy transfer.
 
+Sink:: A special device which has no battery but can accept data
+    transfers from nodes, this is the end-hop in the hop-by-hop
+    network topology (the hop-by-hop is explained in the paper and
+    later in this document).
+
 === Solving the problem
 
 The problem of having 
@@ -86,6 +91,7 @@ hop-to-hop fashion.
 * location of the sensors which are needed for solving the relaxed TSP.
 * ...?
 
+[[implementation]]
 == Implementation on NS3
 
 For our implementation in NS3 we have models (and other NS3 concepts)
@@ -93,17 +99,21 @@ which depend on models, we choose to make a dependency graph of these
 models and start implementing from the bottom up (i.e. implement
 the components/models which do not depend on other models themselves.)
 
-At this point we can safely assume we need the following high-level
+At this point we can assume we need the following high-level
 models, please mind that we might need to review or refactor this
 later.
 
-* *MaxVacMobilityModel*- This mobility model will calculate the shortest
-   path depending on the nodes in the area.
+* *MaxVacMobilityModel*- This mobility model will calculate the
+   shortest path depending on the nodes in the area and solve the
+   OPT-L algorithm being explained in the model. A feasible solution's
+   results of the optimization OPT-L will be forwarded to the
+   dependees
 * *RechargingWaypointMobilityModel* - This model for the WCV will not
-   simply move again after a designated period, but only after a node
-   has been fully charged.
+   simply stand still and move after a designated period, but it will
+   start charging a waypoint which is also a location of a sensor
+   node.
 * *SimpleHopByHopDevice* (HbH) - Devices which can generate and
-   forward sensor data.
+   forward sensor data towards a sink.
 * *RadioEnergyModelPhyListener* - Using the above layer2 models we'll
    have to listen to those devices' events and calculate energy
    correspondingly.
@@ -125,7 +135,6 @@ digraph G { rankdir=UD;
   ->EnergyModel
 }
 ----
-
 === Creating a new HbH device
 
 Filler
@@ -167,6 +176,10 @@ physical layer -- which listens to actual bits send and not calculate
 energy usage by time, the latter is the case of
 WifiRadioEnergyModel. The paper however expresses energy use in terms
 of bits send.
+
+=== A waypoint mobility model with recharging at waypoints/nodes
+
+Filler:
 
 == Simulation results
 
