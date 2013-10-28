@@ -88,32 +88,55 @@ hop-to-hop fashion.
 
 == Implementation on NS3
 
-=== Hardcoded paper scenarios
+For our implementation in NS3 we have models (and other NS3 concepts)
+which depend on models, we choose to make a dependency graph of these
+models and start implementing from the bottom up (i.e. implement
+the components/models which do not depend on other models themselves.)
 
-We will first implement the same scenario's described in the paper to get familiar with NS3
+At this point we can safely assume we need the following high-level
+models, please mind that we might need to review or refactor this
+later.
 
-=== Scenarios using NS3 models
-
-Now that we have hardcoded the scenario's described by the book, we
-will make additions to NS3 and add models that for example will provide:
-
-* *TspMobilityModel* - This mobility model will calculate the shortest
+* *MaxVacMobilityModel*- This mobility model will calculate the shortest
    path depending on the nodes in the area.
 * *RechargingWaypointMobilityModel* - This model for the WCV will not
    simply move again after a designated period, but only after a node
    has been fully charged.
-* *Layer2*-devices
+* *SimpleHopByHopDevice* (HbH) - Devices which can generate and
+   forward sensor data.
 * *RadioEnergyModelPhyListener* - Using the above layer2 models we'll
    have to listen to those devices' events and calculate energy
    correspondingly.
 
-==== Tapping into the energy framework
+[graphviz]
+----
+digraph G { rankdir=UD; 
+  Simulation
+  ->MaxVacMobilityModel
+  ->RechargingWaypointMobilityModel
+  ->EnergyModel
+  ->RadioEnergyModelPhyListener
+  ->EnergyModel
+    RadioEnergyModelPhyListener
+  ->SimpleHopByHopDevice
+
+  Simulation
+  ->Nodes
+  ->EnergyModel
+}
+----
+
+=== Creating a new HbH device
+
+Filler
+
+=== Tapping into the energy framework
 
 We'll take the control flow of the NS3's provided energy model of wifi as an example.
 
 So in a trivial case, you'll have the following snippet:
 
-[source,cc, numbered]
+[source,cc,numbered]
 ----
 /* create some nodes */ 
 NodeContainer c;
