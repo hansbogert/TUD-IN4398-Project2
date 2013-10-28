@@ -33,4 +33,6 @@
 | 15-17   | H      | Presentation + more reading     | 5
 | 17      | H      | lecture                         | 2              
 | 19-21   | H      | Make initial code for 50 sim    | 9
+| 24 oct  | H      | Lecture Niels, wifi             | 2
+| 
 |===
