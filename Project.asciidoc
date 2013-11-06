@@ -39,7 +39,8 @@ Node/Sensor::
 WCV::
     The robot which can perform the energy transfer.
 
-Sink:: A special device which has no battery but can accept data
+Sink:: 
+    A special device which has no battery but can accept data
     transfers from nodes, this is the end-hop in the hop-by-hop
     network topology (the hop-by-hop is explained in the paper and
     later in this document).
