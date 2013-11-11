@@ -95,6 +95,45 @@ hop-to-hop fashion.
 [[implementation]]
 == Implementation on NS3
 
+=== Tools used
+
+* NS3 
+* Kdevelop (C++ IDE), installable easily through package managers like
+  apt (debian(-derivates)) and even macports (OSX)
+
+==== NS3
+
+We shortly explain how we installed NS3, so this document provides
+means to reproduce outcomes.
+
+The following tutorial part was used:
+http://www.nsnam.org/docs/release/3.18/tutorial/html/getting-started.html
+
+More specifically, downloaded using `bake' and built using `waf' for
+version 3.18
+
+==== Kdevelop
+
+Import the ns-3.18 directory. You'll notice not all sources are
+recognized in the IDE when you'd open a NS3 source file, i.e. you
+cannot ctrl-click on data structures and see it's definition. Add the
+'ns-3.18/build' dir to the includes by clicking on a red underlined
+header file (any will do). A new dialog will open in which you have a
+textarea to fill in the 'ns-3.18/build' reference. (make this an
+absolute path e.g. '/home/user/src/ns3/sourc/ns-3.18/build')
+
+=== NS3 setup
+
+We chose to make a NS3 module. By doing so we can benefit from the
+infrastructure of NS3, e.g. testing during builds, example's source
+code ends up in the correct directories -- ergo, our module will
+behave predictable according to NS3 standards.
+
+More info on how modules work:
+http://www.nsnam.org/docs/manual/html/new-modules.html
+
+=== NS3 Concepts
+
 For our implementation in NS3 we have models (and other NS3 concepts)
 which depend on models, we choose to make a dependency graph of these
 models and start implementing from the bottom up (i.e. implement
@@ -115,6 +154,8 @@ later.
    node.
 * *SimpleHopByHopDevice* (HbH) - Devices which can generate and
    forward sensor data towards a sink.
+* *SimpleChannel* - represents the wireless communication channel from a source
+  (sensor node) to a receiver(sensor node or sink)
 * *RadioEnergyModelPhyListener* - Using the above layer2 models we'll
    have to listen to those devices' events and calculate energy
    correspondingly.
@@ -136,6 +177,15 @@ digraph G { rankdir=UD;
   ->EnergyModel
 }
 ----
+=== Creating a new channel
+
+In order to mimic the wireless communication lines in the paper, we
+will implement a simple channel, which basically allows us to send
+bits from one end, to the other of the channel. The channels
+endpoints' are connected to a simple-device. Re-using the
+'WifiModel''s would most likely give us difficulties in the
+energymodel.
+
 === Creating a new HbH device
 
 Filler
@@ -184,5 +234,6 @@ Filler:
 
 == Simulation results
 
+Filler:
 
 == Conclusion

@@ -25,11 +25,12 @@
 #include <ns3/waypoint-mobility-model.h>
 #include <ns3/constant-position-mobility-model.h>
 #include <ns3/basic-energy-source-helper.h>
+#include <ns3/iot-channel.h>
 
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE ("FirstScriptExample");
-const int NSIZE = 50;
+const int NSIZE = 50; // number of sensor nodes
 const int WCV_SPEED = 5; // in meter per second
 const int BATTERY_CAPACITY = 10800; // in Joules
 

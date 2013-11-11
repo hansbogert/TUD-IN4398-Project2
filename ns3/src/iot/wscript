@@ -1,0 +1,36 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+# def options(opt):
+#     pass
+
+# def configure(conf):
+#     conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
+
+def build(bld):
+    module = bld.create_ns3_module('iot', ['core'])
+    module.source = [
+        'model/iot.cc',
+	'model/iot-channel.cc',
+	'model/iot-net-device.cc',
+        'helper/iot-helper.cc',
+        ]
+
+    module_test = bld.create_ns3_module_test_library('iot')
+    module_test.source = [
+        'test/iot-test-suite.cc',
+        ]
+
+    headers = bld(features='ns3header')
+    headers.module = 'iot'
+    headers.source = [
+        'model/iot.h',
+        'model/iot-channel.h',
+        'model/iot-net-device.h',
+        'helper/iot-helper.h',
+        ]
+
+    if bld.env.ENABLE_EXAMPLES:
+        bld.recurse('examples')
+
+    # bld.ns3_python_bindings()
+
