@@ -1,6 +1,7 @@
 #Generated
 *.html
 Project*.png
+.kdev_include_paths
 
 #Backups
 *~
