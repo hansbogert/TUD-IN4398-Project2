@@ -7,7 +7,7 @@
 #     conf.check_nonfatal(header_name='stdint.h', define_name='HAVE_STDINT_H')
 
 def build(bld):
-    module = bld.create_ns3_module('iot', ['core'])
+    module = bld.create_ns3_module('iot', ['core', 'network'])
     module.source = [
         'model/iot.cc',
 	'model/iot-channel.cc',

@@ -25,7 +25,6 @@
 #include "ns3/pointer.h"
 #include "ns3/error-model.h"
 #include "ns3/trace-source-accessor.h"
-#include "popie"
 
 NS_LOG_COMPONENT_DEFINE ("IotNetDevice");
 

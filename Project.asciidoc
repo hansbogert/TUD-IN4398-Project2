@@ -132,6 +132,23 @@ behave predictable according to NS3 standards.
 More info on how modules work:
 http://www.nsnam.org/docs/manual/html/new-modules.html
 
+In our setting you can symlink '/ns3/src/iot' from our work to
+'$NS3_ROOT/src/iot'
+
+[NOTE]
+====
+If you get errors about
+----
+Undefined symbols for architecture x86_64:
+  "ns3::ErrorModel::GetTypeId()", referenced from:
+      ns3::internal::APointerChecker<ns3::ErrorModel>
+---- 
+-- or other `Undefined symbols' Then make sure all dependencies of the
+module are correct in 'ns3/src/iot/wscript' this appears to differ for
+varying build platforms, e.g. on Ubuntu no dependencies were needed
+whereas the same settings would complain as the above listing.
+====
+
 === NS3 Concepts
 
 For our implementation in NS3 we have models (and other NS3 concepts)
