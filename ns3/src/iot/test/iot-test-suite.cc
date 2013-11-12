@@ -24,21 +24,22 @@ NS_LOG_COMPONENT_DEFINE ("IotTestSuite");
 // to use the using directive to access the ns3 namespace directly
 using namespace ns3;
 
-// This is an example TestCase.
 class IotTestCasePacketGoesThroughChannel : public TestCase
 {
 public:
   IotTestCasePacketGoesThroughChannel ();
   virtual ~IotTestCasePacketGoesThroughChannel ();
-
+  bool ReceiveCb(Ptr<NetDevice>,Ptr<const Packet>,uint16_t,const Address &);
 private:
   virtual void DoRun (void);
+  bool received;
 };
 
 // Add some help text to this case to describe what it is intended to test
 IotTestCasePacketGoesThroughChannel::IotTestCasePacketGoesThroughChannel ()
   : TestCase ("Iot test case (does nothing)")
 {
+    received = false;
 }
 
 // This destructor does nothing but we include it as a reminder that
@@ -47,8 +48,14 @@ IotTestCasePacketGoesThroughChannel::~IotTestCasePacketGoesThroughChannel ()
 {
 }
 
-static bool ReceiveCb(Ptr<NetDevice>,Ptr<const Packet>,uint16_t,const Address &){
+bool IotTestCasePacketGoesThroughChannel::ReceiveCb(
+    Ptr< NetDevice > 
+  , ns3::Ptr< const Packet > 
+  , uint16_t 
+  , const Address& )
+{
   NS_LOG_FUNCTION("ReceiveCb");
+  received = true;
   return true;
 }
 
@@ -85,7 +92,7 @@ IotTestCasePacketGoesThroughChannel::DoRun (void)
   device2->SetChannel(channel);
   
   Callback<bool,Ptr<NetDevice>,Ptr<const Packet>,uint16_t,const Address &> receive;
-  receive = MakeCallback(&ReceiveCb);
+  receive = MakeCallback(&IotTestCasePacketGoesThroughChannel::ReceiveCb, this);
   
   device2->SetReceiveCallback(receive);
   
@@ -95,9 +102,13 @@ IotTestCasePacketGoesThroughChannel::DoRun (void)
   
   Simulator::Run();
   
-  /*
+  /* asserts */
+  
+  
+  
   // A wide variety of test macros are available in src/core/test.h
-  NS_TEST_ASSERT_MSG_EQ (true, true, "true doesn't equal true for some reason");
+  NS_TEST_ASSERT_MSG_EQ (true, received, "callback was apparently not called");
+  /*
   // Use this one for floating point comparisons
   NS_TEST_ASSERT_MSG_EQ_TOL (0.01, 0.01, 0.001, "Numbers are not equal within tolerance");
   */
