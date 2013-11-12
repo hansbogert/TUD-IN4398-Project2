@@ -8,10 +8,16 @@
 #include "ns3/iot-net-device.h"
 #include "ns3/packet.h"
 #include "ns3/address.h"
+#include "ns3/callback.h"
+#include "ns3/simulator.h"
+
 
 
 // An essential include is test.h
 #include "ns3/test.h"
+
+NS_LOG_COMPONENT_DEFINE ("IotTestSuite");
+
 
 
 // Do not put your test classes in namespace ns3.  You may find it useful
@@ -19,26 +25,31 @@
 using namespace ns3;
 
 // This is an example TestCase.
-class IotTestCase1 : public TestCase
+class IotTestCasePacketGoesThroughChannel : public TestCase
 {
 public:
-  IotTestCase1 ();
-  virtual ~IotTestCase1 ();
+  IotTestCasePacketGoesThroughChannel ();
+  virtual ~IotTestCasePacketGoesThroughChannel ();
 
 private:
   virtual void DoRun (void);
 };
 
 // Add some help text to this case to describe what it is intended to test
-IotTestCase1::IotTestCase1 ()
+IotTestCasePacketGoesThroughChannel::IotTestCasePacketGoesThroughChannel ()
   : TestCase ("Iot test case (does nothing)")
 {
 }
 
 // This destructor does nothing but we include it as a reminder that
 // the test case should clean up after itself
-IotTestCase1::~IotTestCase1 ()
+IotTestCasePacketGoesThroughChannel::~IotTestCasePacketGoesThroughChannel ()
 {
+}
+
+static bool ReceiveCb(Ptr<NetDevice>,Ptr<const Packet>,uint16_t,const Address &){
+  NS_LOG_FUNCTION("ReceiveCb");
+  return true;
 }
 
 //
@@ -46,7 +57,7 @@ IotTestCase1::~IotTestCase1 ()
 // TestCase must implement
 //
 void
-IotTestCase1::DoRun (void)
+IotTestCasePacketGoesThroughChannel::DoRun (void)
 {
   NS_LOG_UNCOND ("Starting test");
   /*Inits*/
@@ -73,9 +84,16 @@ IotTestCase1::DoRun (void)
   device1->SetChannel(channel);
   device2->SetChannel(channel);
   
+  Callback<bool,Ptr<NetDevice>,Ptr<const Packet>,uint16_t,const Address &> receive;
+  receive = MakeCallback(&ReceiveCb);
+  
+  device2->SetReceiveCallback(receive);
+  
   
   /* Simulation */
   device1->Send(packet, device2->GetAddress(), 0);
+  
+  Simulator::Run();
   
   /*
   // A wide variety of test macros are available in src/core/test.h
@@ -99,7 +117,7 @@ IotTestSuite::IotTestSuite ()
   : TestSuite ("iot", UNIT)
 {
   // TestDuration for TestCase can be QUICK, EXTENSIVE or TAKES_FOREVER
-  AddTestCase (new IotTestCase1, TestCase::QUICK);
+  AddTestCase (new IotTestCasePacketGoesThroughChannel, TestCase::QUICK);
 }
 
 // Do not forget to allocate an instance of this TestSuite
