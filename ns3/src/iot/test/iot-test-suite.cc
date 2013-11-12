@@ -18,8 +18,6 @@
 
 NS_LOG_COMPONENT_DEFINE ("IotTestSuite");
 
-
-
 // Do not put your test classes in namespace ns3.  You may find it useful
 // to use the using directive to access the ns3 namespace directly
 using namespace ns3;
@@ -37,7 +35,7 @@ private:
 
 // Add some help text to this case to describe what it is intended to test
 IotTestCasePacketGoesThroughChannel::IotTestCasePacketGoesThroughChannel ()
-  : TestCase ("Iot test case (does nothing)")
+  : TestCase ("Iot test case for iot devices and channel")
 {
     received = false;
 }
@@ -49,12 +47,13 @@ IotTestCasePacketGoesThroughChannel::~IotTestCasePacketGoesThroughChannel ()
 }
 
 bool IotTestCasePacketGoesThroughChannel::ReceiveCb(
-    Ptr< NetDevice > 
-  , ns3::Ptr< const Packet > 
-  , uint16_t 
-  , const Address& )
+    Ptr< NetDevice >  device
+  , ns3::Ptr< const Packet > p 
+  , uint16_t protocol
+  , const Address& dest)
 {
   NS_LOG_FUNCTION("ReceiveCb");
+  NS_LOG_INFO("Received by " << device->GetNode()->GetId());
   received = true;
   return true;
 }
@@ -103,8 +102,6 @@ IotTestCasePacketGoesThroughChannel::DoRun (void)
   Simulator::Run();
   
   /* asserts */
-  
-  
   
   // A wide variety of test macros are available in src/core/test.h
   NS_TEST_ASSERT_MSG_EQ (true, received, "callback was apparently not called");

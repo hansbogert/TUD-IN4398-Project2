@@ -56,7 +56,7 @@ IotChannel::Send (Ptr<Packet> p, uint16_t protocol,
       Ptr<IotNetDevice> tmp = *i;
       if (tmp == sender)
         {
-          continue;
+          continue; //if its the sender self -- skip to next loop
         }
       Simulator::ScheduleWithContext (tmp->GetNode ()->GetId (), Seconds (0),
                                       &IotNetDevice::Receive, tmp, p->Copy (), protocol, to, from);
