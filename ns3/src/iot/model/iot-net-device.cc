@@ -64,6 +64,7 @@ IotNetDevice::Receive (Ptr<Packet> packet, uint16_t protocol,
                           Mac48Address to, Mac48Address from)
 {
   NS_LOG_FUNCTION (this << packet << protocol << to << from);
+
   NetDevice::PacketType packetType;
 
   if (m_receiveErrorModel && m_receiveErrorModel->IsCorrupt (packet) )
