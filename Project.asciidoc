@@ -169,9 +169,9 @@ later.
    simply stand still and move after a designated period, but it will
    start charging a waypoint which is also a location of a sensor
    node.
-* *SimpleHopByHopDevice* (HbH) - Devices which can generate and
-   forward sensor data towards a sink.
-* *SimpleChannel* - represents the wireless communication channel from a source
+* *IotDevice*- Devices which can generate and forward sensor data
+   towards a base/sink.
+* *IotChannel* - represents the wireless communication channel from a source
   (sensor node) to a receiver(sensor node or sink)
 * *RadioEnergyModelPhyListener* - Using the above layer2 models we'll
    have to listen to those devices' events and calculate energy
@@ -187,7 +187,11 @@ digraph G { rankdir=UD;
   ->RadioEnergyModelPhyListener
   ->EnergyModel
     RadioEnergyModelPhyListener
-  ->SimpleHopByHopDevice
+  ->IotDevice
+  ->IotChannel
+
+  IotChannel
+  ->IotDevice
 
   Simulation
   ->Nodes
@@ -200,12 +204,17 @@ In order to mimic the wireless communication lines in the paper, we
 will implement a simple channel, which basically allows us to send
 bits from one end, to the other of the channel. The channels
 endpoints' are connected to a simple-device. Re-using the
-'WifiModel''s would most likely give us difficulties in the
-energymodel.
++WifiModel+'s would most likely give us difficulties in the
+energymodel. 
 
 === Creating a new HbH device
 
-Filler
+As said in the previous section, we cannot reuse the existing
++WifiModels+ therefore we must also implement a Device-model. 
+
+==== Device behaviour 
+
+We opted to use routing on layer 2, making it a form of shortcut-routing
 
 === Tapping into the energy framework
 
