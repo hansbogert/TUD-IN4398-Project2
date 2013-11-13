@@ -17,3 +17,13 @@ Now you must reconfigure NS3 to incorporate the module:
 ````
 ./waf configure $YOUR_OPTIONS
 ````
+
+## Document
+The project document `Project.asciidoc` can be built be issuing:
+
+````
+asciidoc Project.asciidoc
+````
+
+Mind that you need `graphviz` for filtering/compiling dot-formatted
+graphs.
