@@ -19,7 +19,7 @@ Now you must reconfigure NS3 to incorporate the module:
 ````
 
 ## Document
-The project document `Project.asciidoc` can by built be issuing:
+The project document `Project.asciidoc` can be built by issuing:
 
 ````
 asciidoc Project.asciidoc
