@@ -1,5 +1,8 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
-
+/* Copyright (c) 2013 hansbogert@gmail.com
+ * Author: Hans van den Bogert <hansbogert@gmail.com>
+ * 
+ */
 // Include a header file from your module to test.
 #include "ns3/iot.h"
 #include "ns3/log.h"

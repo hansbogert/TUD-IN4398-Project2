@@ -1,4 +1,8 @@
 # -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+# Copyright (c) 2013 hansbogert@gmail.com
+# Author: Hans van den Bogert <hansbogert@gmail.com>
+#
+#
 
 # def options(opt):
 #     pass

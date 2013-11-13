@@ -1,4 +1,11 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/* Copyright (c) 2013 hansbogert@gmail.com
+ *
+ * Edits made to original Simple{Channel|NetDevice} for the IoT seminar @TUDelft
+ * Following original license holds
+ *
+ * Author: Hans van den Bogert <hansbogert@gmail.com>
+ */
 /*
  * Copyright (c) 2008 INRIA
  *
