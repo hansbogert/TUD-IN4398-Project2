@@ -112,7 +112,7 @@ http://www.nsnam.org/docs/release/3.18/tutorial/html/getting-started.html
 More specifically, downloaded using `bake' and built using `waf' for
 version 3.18
 
-==== Kdevelop
+==== KDevelop
 
 Import the ns-3.18 directory. You'll notice not all sources are
 recognized in the IDE when you'd open a NS3 source file, i.e. you
@@ -205,7 +205,9 @@ will implement a simple channel, which basically allows us to send
 bits from one end, to the other of the channel. The channels
 endpoints' are connected to a simple-device. Re-using the
 +WifiModel+'s would most likely give us difficulties in the
-energymodel. 
+energymodel. One big deviation is that we need to artificially need to
+know how far the receiver is to the sender-node, because the paper is
+basing energy usage to distance. Read more on this in <<energy, energy section>>.
 
 === Creating a new HbH device
 
@@ -214,8 +216,14 @@ As said in the previous section, we cannot reuse the existing
 
 ==== Device behaviour 
 
-We opted to use routing on layer 2, making it a form of shortcut-routing
+We opted to use routing on layer 2, making it a form of
+shortcut-routing<<mieghem>> i.e. forwarding using layer-2. Again, NS3's means of
+routing are heavily influenced by classical IP networks -- it would've
+forced us to implement our lower layers usuable by IP networks,
+however the papers proposed network is based on a tree structure whose
+routing rules are predefined.
 
+[[energy]]
 === Tapping into the energy framework
 
 We'll take the control flow of the NS3's provided energy model of wifi as an example.
@@ -249,10 +257,14 @@ to the physical part of the WifiNetDeivce.
 
 In the paper's scenario we have to create such a RadioEnergyModel,
 which describes a listener for our simplified (non-wifi) wireless
-physical layer -- which listens to actual bits send and not calculate
+physical layer -- which listens to actual bits sent and not calculate
 energy usage by time, the latter is the case of
 WifiRadioEnergyModel. The paper however expresses energy use in terms
-of bits send.
+of bits send over a certain distance following from the formula +
+'C~ij~ = B~1~ + B~2~D^a^~ij~' + 
+
+In reality this would mean that every node should be configured with
+the knowledge how far its upstream node is located
 
 === A waypoint mobility model with recharging at waypoints/nodes
 
@@ -263,3 +275,10 @@ Filler:
 Filler:
 
 == Conclusion
+
+
+[bibliography]
+== Bibliography
+* [[[mieghem]]] Piet van Mieghem, 2006, Data Communications Networking, Delft, 305 p.
+
+
