@@ -13,6 +13,8 @@
 #include "ns3/address.h"
 #include "ns3/callback.h"
 #include "ns3/simulator.h"
+#include "ns3/basic-energy-source.h"
+#include "ns3/iot-energy-model.h"
 
 
 
@@ -150,6 +152,49 @@ IotTestCasePacketGoesThroughChannel::DoRun (void)
   */
 }
 
+//-----------------------------------------------------------------------------
+// Energy tests
+class IotTestCaseEnergy : public TestCase
+{
+public:
+  IotTestCaseEnergy ();
+  virtual ~IotTestCaseEnergy ();
+private:
+  virtual void DoRun (void);
+};
+
+IotTestCaseEnergy::IotTestCaseEnergy(): TestCase("Test case for energy model in IoT devices")
+{
+
+}
+
+IotTestCaseEnergy::~IotTestCaseEnergy()
+{
+
+}
+
+void IotTestCaseEnergy::DoRun(void )
+{
+  /* inits */
+  Ptr<Node> node = CreateObject<Node>();
+  
+  Ptr<IotNetDevice> device = CreateObject<IotNetDevice>();
+  
+  Ptr<BasicEnergySource> energySource = CreateObject<BasicEnergySource>();
+  
+  Ptr<IotEnergyModel> energyModel = CreateObject<IotEnergyModel>();
+  
+  /* setup */  
+  node->AddDevice(device);
+  
+  /* Simulation */
+  
+  /* Asserts */
+}
+
+
+
+
 // The TestSuite class names the TestSuite, identifies what type of TestSuite,
 // and enables the TestCases to be run.  Typically, only the constructor for
 // this class must be defined
@@ -165,6 +210,7 @@ IotTestSuite::IotTestSuite ()
 {
   // TestDuration for TestCase can be QUICK, EXTENSIVE or TAKES_FOREVER
   AddTestCase (new IotTestCasePacketGoesThroughChannel, TestCase::QUICK);
+  AddTestCase (new IotTestCaseEnergy, TestCase::QUICK);
 }
 
 // Do not forget to allocate an instance of this TestSuite
