@@ -87,10 +87,11 @@ IotNetDevice::Receive (Ptr<Packet> packet, uint16_t protocol,
     }
   else 
     {
-      //shortcutrouting
-      GetNode()->GetDevice(0)->Send(packet,to,protocol); //have index-0 as upstream
-      
       packetType = NetDevice::PACKET_OTHERHOST;
+      NS_LOG_INFO("Packet for other host");
+      //shortcutrouting
+      NS_LOG_INFO("Forwarding packet");
+      GetNode()->GetDevice(0)->Send(packet, to, protocol); //have index-0 as upstream
     }
   m_rxCallback (this, packet, protocol, from);
   if (!m_promiscCallback.IsNull ())
