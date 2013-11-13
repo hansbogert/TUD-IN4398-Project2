@@ -12,3 +12,8 @@ cd $NS3_ROOT/
 ln -s $PULL_DIR/ns3/scratch
 ````
 
+Now you must reconfigure NS3 to incorporate the module:
+
+````
+./waf configure $YOUR_OPTIONS
+````
