@@ -92,6 +92,9 @@ public:
   virtual bool NeedsArp (void) const;
   virtual void SetReceiveCallback (NetDevice::ReceiveCallback cb);
 
+  typedef Callback<bool,Ptr<NetDevice>,Ptr<Packet>,const Address&,uint16_t> SendCallback;
+  virtual void SetSendCallback (SendCallback cb);
+
   virtual Address GetMulticast (Ipv6Address addr) const;
 
   virtual void SetPromiscReceiveCallback (PromiscReceiveCallback cb);
@@ -102,6 +105,8 @@ protected:
 private:
   Ptr<IotChannel> m_channel;
   NetDevice::ReceiveCallback m_rxCallback;
+  SendCallback m_txCallback;
+
   NetDevice::PromiscReceiveCallback m_promiscCallback;
   Ptr<Node> m_node;
   uint16_t m_mtu;

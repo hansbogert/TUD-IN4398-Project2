@@ -14,6 +14,7 @@
 #include "ns3/callback.h"
 #include "ns3/simulator.h"
 #include "ns3/basic-energy-source.h"
+#include "ns3/basic-energy-source-helper.h"
 #include "ns3/iot-energy-model.h"
 
 
@@ -175,21 +176,36 @@ IotTestCaseEnergy::~IotTestCaseEnergy()
 
 void IotTestCaseEnergy::DoRun(void )
 {
+  NS_LOG_FUNCTION(this);
   /* inits */
-  Ptr<Node> node = CreateObject<Node>();
+  Ptr<Node> node = CreateObject<Node> ();
   
-  Ptr<IotNetDevice> device = CreateObject<IotNetDevice>();
+  Ptr<IotNetDevice> device = CreateObject<IotNetDevice> ();
   
-  Ptr<BasicEnergySource> energySource = CreateObject<BasicEnergySource>();
-  
+  BasicEnergySourceHelper basicEnergySourceHelper;
+ 
   Ptr<IotEnergyModel> energyModel = CreateObject<IotEnergyModel>();
   
   /* setup */  
-  node->AddDevice(device);
+  node->AddDevice (device);
+  //set a battery/energySource to a node
+  basicEnergySourceHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (10800));
+  EnergySourceContainer sources = basicEnergySourceHelper.Install (node);
+  
+  // connect the model with the battery/energySource and vice-versa
+  // assumed the mutual reference is needed as indicated by 
+  // "wifi-radio-energy-model-helper.cc::DoInstall()"
+  energyModel->SetEnergySource(sources.Get (0));
+  sources.Get (0)->AppendDeviceEnergyModel (energyModel);
+  
+  //register a listener so the energyModel knows when to update the battery level
+  device->SetSendCallback (energyModel->GetIotNetDeviceSendCallback ());
   
   /* Simulation */
   
+  
   /* Asserts */
+  
 }
 
 

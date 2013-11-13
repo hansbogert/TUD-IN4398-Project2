@@ -292,4 +292,10 @@ IotNetDevice::SupportsSendFrom (void) const
   return true;
 }
 
+void IotNetDevice::SetSendCallback(IotNetDevice::SendCallback cb)
+{
+  m_txCallback = cb;
+}
+
+
 } // namespace ns3

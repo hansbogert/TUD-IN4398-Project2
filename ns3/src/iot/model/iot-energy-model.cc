@@ -1,5 +1,6 @@
 #include "ns3/log.h"
 #include "ns3/double.h"
+#include "ns3/packet.h"
 #include "ns3/simulator.h"
 #include "ns3/trace-source-accessor.h"
 #include "ns3/energy-source.h"
@@ -83,4 +84,18 @@ IotEnergyModel::GetDeviceListener (void)
   NS_LOG_FUNCTION (this);
   return m_listener;
 }
+
+bool 
+IotEnergyModel::IotNetDeviceSendCallback (Ptr<NetDevice> device, Ptr<Packet> p, const Address& dest, uint16_t protocol){
+  NS_LOG_FUNCTION (this << "We are gonna do something!!! :D");
+  return true;
 }
+
+IotNetDevice::SendCallback IotEnergyModel::GetIotNetDeviceSendCallback(void )
+{
+  Callback<bool, Ptr<NetDevice>, Ptr<Packet>, const Address&, uint16_t> send;
+  send = MakeCallback(&IotEnergyModel::IotNetDeviceSendCallback, this);
+  return send;
+}
+} //end namespace ns3
+
