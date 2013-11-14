@@ -18,6 +18,11 @@ Now you must reconfigure NS3 to incorporate the module:
 ./waf configure $YOUR_OPTIONS
 ````
 
+Afterwards it the specific 'iot' module can be tested by issuing:
+````
+./test.ph -s iot
+````
+
 ## Document
 The project document `Project.asciidoc` can be built by issuing:
 
