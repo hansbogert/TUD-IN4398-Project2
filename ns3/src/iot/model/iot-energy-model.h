@@ -3,7 +3,7 @@
 
 #include "ns3/device-energy-model.h"
 #include "ns3/packet.h"
-#include "ns3/energy-source.h"
+#include "ns3/iot-energy-source.h"
 #include "ns3/traced-value.h"
 #include "ns3/ptr.h"
 #include "ns3/pointer.h"
@@ -33,18 +33,28 @@ public:
   IotEnergyModelDeviceListener * GetDeviceListener (void);
   IotNetDevice::SendCallback GetIotNetDeviceSendCallback (void);
   bool IotNetDeviceSendCallback (Ptr<NetDevice>, Ptr<Packet> p, const Address& dest, uint16_t protocol);
+  virtual void SetDistanceToUpstream (double distance); // in meters
+  virtual void SetB1Constant (double b1); // in J
+  virtual void SetB2Coefficient (double b2); // in J
+  virtual void SetAPathLossIndex (double a); // Loss index, see paper
+
 private:
   //virtual double DoGetCurrentA (void) const;
-  Ptr<EnergySource> m_source;
-  
+  Ptr<IotEnergySource> m_source;
+
   // IotDevice listener
   IotEnergyModelDeviceListener *m_listener;
-  
+
   // This variable keeps track of the total energy consumed by this model.
   TracedValue<double> m_totalEnergyConsumption;
-  
+
   // Energy depletion callback
-  IotEnergyDepletionCallback m_energyDepletionCallback;  
+  IotEnergyDepletionCallback m_energyDepletionCallback;
+
+  double m_distanceToUpStream;
+  double m_b1Constant; //in J/b
+  double m_b2Coefficient; //in J/(b/m^4)
+  double m_aPathLossIndex;
 };
 } // namespace ns3
 #endif /* IOT_ENERGY_MODEL_H */

@@ -16,8 +16,7 @@
 #include "ns3/basic-energy-source.h"
 #include "ns3/basic-energy-source-helper.h"
 #include "ns3/iot-energy-model.h"
-
-
+#include "ns3/iot-energy-source.h"
 
 // An essential include is test.h
 #include "ns3/test.h"
@@ -177,35 +176,61 @@ IotTestCaseEnergy::~IotTestCaseEnergy()
 void IotTestCaseEnergy::DoRun(void )
 {
   NS_LOG_FUNCTION(this);
+
   /* inits */
   Ptr<Node> node = CreateObject<Node> ();
-  
+
+  Ptr<IotChannel> channel = CreateObject<IotChannel> ();
+
+  // Make a packet which the node will send, on which we will test the send callback
+  Ptr<Packet> packet = Create<Packet>();
+  packet->AddPaddingAtEnd(10);
+
+  // Make some bogus address
+  Mac48Address address ("00:00:00:00:00:01");
+
+  // Make a IotNetDevice for sending the packet
   Ptr<IotNetDevice> device = CreateObject<IotNetDevice> ();
-  
-  BasicEnergySourceHelper basicEnergySourceHelper;
- 
+
+  // Create energy source
+  Ptr<IotEnergySource> source = CreateObject<IotEnergySource>();
+
+  // Instantiate our energyModel
   Ptr<IotEnergyModel> energyModel = CreateObject<IotEnergyModel>();
-  
+
   /* setup */  
   node->AddDevice (device);
+  device->SetChannel(channel);
   //set a battery/energySource to a node
-  basicEnergySourceHelper.Set ("BasicEnergySourceInitialEnergyJ", DoubleValue (10800));
-  EnergySourceContainer sources = basicEnergySourceHelper.Install (node);
-  
+  source->SetAttribute ("IotEnergySourceInitialEnergyJ", DoubleValue (10800));
+  source->SetNode (node);
+
   // connect the model with the battery/energySource and vice-versa
   // assumed the mutual reference is needed as indicated by 
   // "wifi-radio-energy-model-helper.cc::DoInstall()"
-  energyModel->SetEnergySource(sources.Get (0));
-  sources.Get (0)->AppendDeviceEnergyModel (energyModel);
-  
+
+  energyModel->SetEnergySource (source);
+  energyModel->SetDistanceToUpstream (10); // set the upstream node 10m away.
+  // Set the parameters as set in the paper's simulation settings
+  energyModel->SetB1Constant (0.0013e-12);
+  energyModel->SetB2Coefficient (50e-9);
+  energyModel->SetAPathLossIndex (4);
+
+  source->AppendDeviceEnergyModel (energyModel);
+
   //register a listener so the energyModel knows when to update the battery level
   device->SetSendCallback (energyModel->GetIotNetDeviceSendCallback ());
-  
+
   /* Simulation */
-  
-  
+  device->Send (packet, address, 0);
+  Simulator::Run();
+
   /* Asserts */
-  
+  // We've sent a packet of 10bytes over a distance of 10m with b1, b2 and a
+  // respectively: 1.3e-15, 50e-9 and 4.
+  // Total amount of energy spent should be 0.0013e-12*80 + 50e-9*10^4 = 0.04J
+  double energyLeft = source->GetRemainingEnergy();
+  NS_TEST_ASSERT_MSG_EQ (energyLeft, 10800-0.04, "The energy amount was not correctly handled after 1 packet");
 }
 
 

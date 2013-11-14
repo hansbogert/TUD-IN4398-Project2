@@ -39,7 +39,7 @@ IotEnergyModel::SetEnergySource (Ptr<EnergySource> source)
 {
   NS_LOG_FUNCTION (this << source);
   NS_ASSERT (source != NULL);
-  m_source = source;
+  m_source = DynamicCast<IotEnergySource>(source);
 }
 
 double
@@ -87,7 +87,17 @@ IotEnergyModel::GetDeviceListener (void)
 
 bool 
 IotEnergyModel::IotNetDeviceSendCallback (Ptr<NetDevice> device, Ptr<Packet> p, const Address& dest, uint16_t protocol){
-  NS_LOG_FUNCTION (this << "We are gonna do something!!! :D");
+  NS_LOG_FUNCTION (this << p->GetSize());
+  NS_LOG_FUNCTION("Upstream is " << m_distanceToUpStream << "m away");
+  NS_LOG_DEBUG ( "parameters" << m_b1Constant << m_b2Coefficient << m_aPathLossIndex );
+  uint16_t bitsSend = p->GetSize () * 8;
+  double consumption = (m_b1Constant * bitsSend)
+		     + (m_b2Coefficient
+		       * bitsSend
+		       * pow (m_distanceToUpStream, m_aPathLossIndex)
+		       );
+
+  m_source->SubstractEnergy(consumption);
   return true;
 }
 
@@ -97,5 +107,26 @@ IotNetDevice::SendCallback IotEnergyModel::GetIotNetDeviceSendCallback(void )
   send = MakeCallback(&IotEnergyModel::IotNetDeviceSendCallback, this);
   return send;
 }
+
+void IotEnergyModel::SetDistanceToUpstream(double distance)
+{
+  m_distanceToUpStream = distance;
+}
+
+void IotEnergyModel::SetB1Constant(double b1)
+{
+  m_b1Constant = b1;
+}
+
+void IotEnergyModel::SetB2Coefficient(double b2)
+{
+  m_b2Coefficient = b2;
+}
+
+void IotEnergyModel::SetAPathLossIndex(double a)
+{
+  m_aPathLossIndex = a;
+}
+
 } //end namespace ns3
 

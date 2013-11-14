@@ -230,6 +230,10 @@ IotNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protocolNu
   NS_LOG_FUNCTION (this << packet << dest << protocolNumber);
   Mac48Address to = Mac48Address::ConvertFrom (dest);
   m_channel->Send (packet, protocolNumber, to, m_address, this);
+  if (!m_txCallback.IsNull())
+    {
+      m_txCallback (this, packet, dest, protocolNumber);
+    }
   return true;
 }
 bool 
@@ -294,6 +298,7 @@ IotNetDevice::SupportsSendFrom (void) const
 
 void IotNetDevice::SetSendCallback(IotNetDevice::SendCallback cb)
 {
+  NS_LOG_FUNCTION (this << &cb);
   m_txCallback = cb;
 }
 

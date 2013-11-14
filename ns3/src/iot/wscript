@@ -17,6 +17,7 @@ def build(bld):
 	'model/iot-channel.cc',
 	'model/iot-net-device.cc',
 	'model/iot-energy-model.cc',
+	'model/iot-energy-source.cc',
         'helper/iot-helper.cc',
         ]
 
@@ -32,6 +33,7 @@ def build(bld):
         'model/iot-channel.h',
         'model/iot-net-device.h',
         'model/iot-energy-model.h',
+        'model/iot-energy-source.h',
         'helper/iot-helper.h',
         ]
 
