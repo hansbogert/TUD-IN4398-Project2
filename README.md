@@ -27,7 +27,7 @@ Afterwards it the specific 'iot' module can be tested by issuing:
 The project document `Project.asciidoc` can be built by issuing:
 
 ````
-asciidoc Project.asciidoc
+asciidoc -a latexmath Project.asciidoc
 ````
 
 Mind that you need `graphviz` for filtering/compiling dot-formatted
