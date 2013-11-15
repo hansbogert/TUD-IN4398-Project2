@@ -16,14 +16,13 @@ ____
 
 The paper describes methods for recharging static sensors in an area
 by a dedicated robot which will move in the area to recharge the
-sensors. Its movement is dictated by the shortest hamiltonian path
+sensors. Its movement is dictated by the shortest Hamiltonian path
 which is gotten through reducing the problem to the
 http://en.wikipedia.org/wiki/Travelling_salesman_problem[traveling
 salesman problem](_TSP_) which is then solved using linear programming.
 
 The novelty of this paper is the optimization of the ratio of the
-robot's idle time over its traveling time -- keeping in mind that this
-is more restrictive then the _TSP_ itself.
+robot's idle time over its traveling time.
 
 The main aim of this document is to simulate the scenario described by
 the paper using NS3. Hereby trying to encounter difficulties from
@@ -33,17 +32,17 @@ In the next chapter we will describe the paper in more detail to make
 the background clear. In the then following chapter a description of
 the proposed idea is given followed by the implementation. After our
 implementation we will run tests to see if our implementation is
-correct and show the results. As the final section will conclude this
-document.
+correct and show the results. The final section will conclude this
+document and give some words on future work.
 
 [[paper]]
 == Paper
 
 As this work greatly depends on the work of the paper, it is advised
-to have read the paper, however we try to summarize the work to be
-able to read the rest of this document. First we will give some
-terminology used in the paper and then superficially summarize the
-work in the paper.
+to have read the paper, however we try to summarize the work so the
+reader should be able to read the rest of this document. First we will
+give some terminology used in the paper and then superficially
+summarize the work in the paper.
 
 .Terminology
 
@@ -54,8 +53,8 @@ Node/Sensor::
     Used in the broad sense of Sensor-Networks, these nodes
     work on batteries.
 
-WCV::
-    The robot which can perform the energy transfer.
+WCV:: [Wireless charging vehicle] A robot which can perform the energy
+    transfer to recharge the static nodes.
 
 Sink/Base:: 
     A special device which has no battery but can accept data
@@ -76,10 +75,12 @@ the paper's optimization problem.
 The paper tries to solve the above problem by introducing concepts
 like:
 
-* _renewable cycle_ - @TODO
+* _renewable cycle_ - A cycle is the traveling by the WCV over the
+  Hamiltonian path through all the sensor nodes, the WCV charges all
+  the sensor nodes along the way.
 * _energy-consumption model_- describes how much energy is used by
   sending and receiving bits of data.
-* _dataflow-model_ - A model describing how data flows from nodes to
+* _data flow-model_ - A model describing how data flows from nodes to
   the base station. Nodes can use intermediate nodes to cover greater
   distances. (In theory no intermediate nodes are necessary because a
   sensor could transmit its data at higher wattage, however energy
@@ -104,11 +105,13 @@ To test their solution the authors simulate a test case with a 50- and
 actually simulated, because at close inspection it seems the paper
 merely uses their proposed optimization problem and simply fill it
 with the node scenarios and some concrete values for parameters like
-transmission- and receiving cost
+transmission- and receiving cost, afterwards they list the outcome of
+the apparently feasible solutions.
 
 In order to simulate better we propose our own simulation in the next
 section.
 
+[[proposal]]
 == Mapping the concepts to NS3
 
 To make our own simulation we propose to use the NS3 framework and
@@ -121,8 +124,8 @@ which depend on models, we choose to make a dependency graph of these
 models and start implementing from the bottom up (i.e. implement
 the components/models which do not depend on other models themselves.)
 
-At this point we can assume we need the following high-level
-models.
+Translating the models and concepts of the paper to NS3, we can assume
+we need the following NS3-models.
 
 * *Node* - represents any actor like a sensor node, WCV or sink.
 * *IotChannel* - represents the wireless communication channel from a source
@@ -136,7 +139,7 @@ models.
    by the *IotEnergyModel*.
 * *RechargingWaypointMobilityModel* - This model for the WCV will not
    simply stand still and move after a designated period, but it will
-   start charging a waypoint which is also a location of a sensor
+   start charging at a  waypoint which is also a location of a sensor
    node.
 * *MaxVacMobilityModel*- This mobility model will calculate the
    shortest path depending on the nodes in the area and solve the
@@ -177,7 +180,7 @@ digraph G { rankdir=UD;
 Now as stated above by having `MaxVacMobilityModel` calculating the
 charging times for nodes by the WCV -- using the proposed LP problem
 -- we can verify the author's model by simulation and see if nodes'
-batteries never deplete.  @TODO location
+batteries never deplete. 
 
 Implementing from the bottom up led us to implement `IotChannel`,
 `IotNetDevice`, `IotEnergyModel` and `IotEnergySource`. Due to
@@ -266,9 +269,9 @@ therefore unforeseen problems may arise.
 ==== IotChannel
 In order to mimic the wireless communication lines in the paper, we
 will implement a simple channel, which basically allows us to send
-bits from one end, to the other of the channel. The channels
-endpoints' are connected to a simple-device. Re-using the
-+WifiModel+'s would most likely give us difficulties in the
+bits from one end, to the other of the channel. The channel's
+endpoints are connected to `IotNetdevice` s. Re-using the
++WifiModel+ s would most likely give us difficulties in the
 energymodel. One big deviation is that we artificially need to know
 how far the receiver is to the sender-node, because the paper is
 basing energy usage to distance. Read more on this in the <<energy>>
@@ -278,7 +281,8 @@ The implementation is in:
 https://github.com/hansbogert/TUD-IN4398-Project2/blob/master/ns3/src/iot/model/iot-channel.h[iot-channel.h]
 The implementation is based on the example 'simple-channel.h'. The
 reason for our own implementation is that it is necessary in order to
-have your own `NetDevice`
+have our own `IotNetDevice` derived from `NetDevice` because in this
+regard the NS3 framework is rather tightly coupled.
 
 .IotChannel behaviour
 
@@ -304,11 +308,15 @@ to the class, described in the next paragraph.
 .Device behavior 
 
 We opted to use routing on layer 2, making it a form of
-shortcut-routing<<mieghem>> i.e. forwarding using layer-2. @TODO
-Again, NS3's means of routing are heavily influenced by classical IP
-networks -- it would've forced us to implement our lower layers usable
-by IP networks, however the papers proposed network is based on a tree
-structure whose routing rules are predefined.
+shortcut-routing<<mieghem>> i.e. forwarding using layer-2. Why we
+opted to use our own implementation is that NS3's means of routing are
+heavily influenced by classical IP networks -- it would've forced us
+to implement our lower layers to adhere to semantics used in IP
+networks, however the papers proposed network is based on a tree
+structure whose routing rules are predefined. Besides the static
+routing, the packet layout (like headers) is not defined in the paper
+so we've assumed nothing and left this open for implementation if
+necessary. 
 
 [[energy]]
 ==== Tapping into the energy framework
@@ -323,9 +331,10 @@ that all has to do with the following. The energy-framework includes
 models for wifi which we would've wanted to use -- however the energy
 models from the energy-framework are tightly coupled and assumes that
 the physical layer runs at a certain voltage and current. This is very
-rigid because this implies (and can be easily checked in the source
-code @TODO) that energy usage is per time-unit i.e. if the physical
-radio state is on, it is using energy according to the classical model of:
+rigid because this implies (and can be easily checked in the
+http://www.nsnam.org/doxygen/wifi-radio-energy-model_8h_source.html#l00254[source
+code] ) that energy usage is per time-unit i.e. if the physical radio
+state is on, it is using energy according to the classical model of:
 
 latexmath:[$E = U.I.t$] (for example used
 http://www.nsnam.org/doxygen/model_2li-ion-energy-source_8cc_source.html#l00267[li-ion
@@ -408,8 +417,7 @@ our models.
 
 To test if our channel correctly sends data from one endpoint to
 another endpoint and our `IotNetDevice` correctly forwards data to its
-upstream node. We assume the information of which node sends to which
-other node would normally be given by the MaxVacMobilityModel.
+upstream node, we devise the following setup.
 
 we set up a small network like the following:
 
@@ -426,9 +434,15 @@ digraph G { rankdir=UD;
 This means that if node1 sends a packet, node2 must route it forward to
 the base. 
 
+We assumed the information of which node sends to which
+other node would normally be given by the `MaxVacMobilityModel`.
+
 The test can be found in the
 https://github.com/hansbogert/TUD-IN4398-Project2/blob/master/ns3/src/iot/test/iot-test-suite.cc#L88[testsuite]
 
+and run by:
+
+`./test.py -s iot`
 
 === Testing IotEnergyModel and -Source
 
@@ -440,8 +454,13 @@ receiving of bits also costs energy, which is simply defined by
 latexmath:[$\rho = J/b$]
 
 So in our unit test -- using the same energy parameters as the paper
--- the amount of energy used by node1 is latexmath:[$C_{ij} = \beta_1
-+ \beta_2 D_{ij}^a = 0.0013.10^{-12} + 50.10^{-9}.10^4 = 0.04J$]
+-- the amount of energy used by node1 is latexmath:[$80\cdot C_{ij} = 80 \cdot (\beta_1
++ \beta_2 D_{ij}^a ) = 80 \cdot 0.0013.10^{-12} + 80 \cdot 50.10^{-9}.10^4 = 0.04J$]
+
+In the same test we also assert that node2 uses energy for receiving
+according to paper's model. This means that for 10 bytes the energy
+usage for receiving should be latexmath:[$80b\cdot \rho = 80b\cdot
+50.10^{-9}J/b = 4.00\cdot 10^6J $ ]
 
 The test can be found in
 https://github.com/hansbogert/TUD-IN4398-Project2/blob/master/ns3/src/iot/test/iot-test-suite.cc#L176[testsuite]
@@ -451,23 +470,26 @@ https://github.com/hansbogert/TUD-IN4398-Project2/blob/master/ns3/src/iot/test/i
 In this document we've explained how we've tried to simulate the
 proposed solution in the paper of <<Xie>>. Because of the abstract
 level in that paper not many NS3-models were applicable and reusable,
-resulting in the implementation of low-level models like 'NetDevices'
+resulting in the implementation of low-level models like `NetDevices`
 and 'Channels'. In our opinion the most deviating choices of the paper
 compared to choices resembling real-life scenario's (or NS3 for that
 matter) are:
 
-* Energy is spent per bit
+* Energy is spent per bit and this seems to be at odds how physical
+  layers of radio devices work and are simulated
 * Devices know how strong they can emit, for other nodes to still
-  receive it.
+  receive it. 
 
 However, we've implemented the lower layers upon which the rest of the
-models could be built. Our work is tested through unit-tests.
+models -- talked about in <<proposal,mapping to NS3>> -- can be
+built. Our work is tested through unit-tests and passes them in cases
+with data-routing and energy use-cases.
 
 .Future recommendations
 
 First of all, more implementations are needed on the proposed
 models. So to include implementations of the optimization solver,
-RechargingWaypointMobilityModels for the WCV and `MaxVacMobilityModel`.
+`RechargingWaypointMobilityModels` for the WCV and `MaxVacMobilityModel`.
 
 Furthermore the callbacks used in our implementation of `IotNetDevice`
 should be refactored to a Listener pattern, so that multiple models
@@ -475,18 +497,24 @@ like `IotEnergyModel` can hook into send- and receive-events. The
 reason why this is not implemented in the NS3 base class `NetDevice`
 eludes us.
 
+The routing in `IotNetDevices` should be extended to deal with faulty
+laid out networks. Our models assume that a sink is available to every
+node albeit indirectly. If this is not the case route loops can occur.
+
 :numbered!:
 [bibliography]
 == Bibliography
 * [[[mieghem]]] Piet van Mieghem, 2006, Data Communications Networking, Delft, 305 p.
-* [[[Xie]]] http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6153401
-@TODO
+* [[[Xie]]] Liguang Xie & Yi Shi & Y. Thomas Hou & Hanif D. Sherali,
+2012, Making Sensor Networks Immortal: An Energy-Renewal Approach With
+Wireless Power Transfer, ACM transactions on networking, VOL. 20,
+NO.6, p1748.
 
 
 [[appendix]]
 == Appendix
 
-The OPT - optimalization problem:
+OPT - optimalization problem proposed in the paper:
 
 latexmath:[$max \frac{\tau_{vac}}{\tau}$]
 
