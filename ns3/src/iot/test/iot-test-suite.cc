@@ -178,59 +178,99 @@ void IotTestCaseEnergy::DoRun(void )
   NS_LOG_FUNCTION(this);
 
   /* inits */
-  Ptr<Node> node = CreateObject<Node> ();
+  Ptr<Node> node1 = CreateObject<Node> ();
+  Ptr<Node> node2 = CreateObject<Node> ();
 
   Ptr<IotChannel> channel = CreateObject<IotChannel> ();
 
+  
+
+  // Make some bogus address we only use them because the base class NetDevice 
+  // forces us to.
+  Mac48Address address1 ("00:00:00:00:00:01");
+  Mac48Address address2 ("00:00:00:00:00:0f");
+  
   // Make a packet which the node will send, on which we will test the send callback
   Ptr<Packet> packet = Create<Packet>();
-  packet->AddPaddingAtEnd(10);
 
-  // Make some bogus address
-  Mac48Address address ("00:00:00:00:00:01");
 
-  // Make a IotNetDevice for sending the packet
-  Ptr<IotNetDevice> device = CreateObject<IotNetDevice> ();
+  // Make a IotNetDevice for sending the packet and receiving
+  Ptr<IotNetDevice> device1 = CreateObject<IotNetDevice> ();
+  Ptr<IotNetDevice> device2 = CreateObject<IotNetDevice> ();
 
-  // Create energy source
-  Ptr<IotEnergySource> source = CreateObject<IotEnergySource>();
+  // Create energy source for node 1 and 2 resp.
+  Ptr<IotEnergySource> source1 = CreateObject<IotEnergySource>();
+  Ptr<IotEnergySource> source2 = CreateObject<IotEnergySource>();
 
-  // Instantiate our energyModel
-  Ptr<IotEnergyModel> energyModel = CreateObject<IotEnergyModel>();
+  // Instantiate our energyModel for node 1 and 2 resp.
+  Ptr<IotEnergyModel> energyModel1 = CreateObject<IotEnergyModel>();
+  Ptr<IotEnergyModel> energyModel2 = CreateObject<IotEnergyModel>();
 
   /* setup */  
-  node->AddDevice (device);
-  device->SetChannel(channel);
-  //set a battery/energySource to a node
-  source->SetAttribute ("IotEnergySourceInitialEnergyJ", DoubleValue (10800));
-  source->SetNode (node);
+  //add netdevices to nodes
+  node1->AddDevice (device1);
+  node2->AddDevice (device2);
+  
+  //set node 2 as base
+  device2->SetAddress(address2);
+  
+  //attach channels to netdevices
+  device1->SetChannel(channel);
+  device2->SetChannel(channel);
+  
+  packet->AddPaddingAtEnd(10);
+
+  
+  // set a battery/energySource to a node 
+  // and 10800J as arbitrary number which corresponds to the NiMH batteries 
+  // used in the paper's simulation
+  source1->SetAttribute ("IotEnergySourceInitialEnergyJ", DoubleValue (10800));
+  source1->SetNode (node1);
+  source2->SetAttribute ("IotEnergySourceInitialEnergyJ", DoubleValue (10800)); 
+  source2->SetNode (node2);
 
   // connect the model with the battery/energySource and vice-versa
   // assumed the mutual reference is needed as indicated by 
   // "wifi-radio-energy-model-helper.cc::DoInstall()"
-
-  energyModel->SetEnergySource (source);
-  energyModel->SetDistanceToUpstream (10); // set the upstream node 10m away.
+  energyModel1->SetEnergySource (source1);
+  energyModel1->SetDistanceToUpstream (10); // set the upstream node 10m away.
   // Set the parameters as set in the paper's simulation settings
-  energyModel->SetB1Constant (0.0013e-12);
-  energyModel->SetB2Coefficient (50e-9);
-  energyModel->SetAPathLossIndex (4);
+  energyModel1->SetB1Constant (0.0013e-12);
+  energyModel1->SetB2Coefficient (50e-9);
+  energyModel1->SetAPathLossIndex (4);
+  
+  //actually not necessary for node 2, because it only receives and therefor we have to set the \rho parameter
+  energyModel2->SetEnergySource (source2);
+  energyModel2->SetDistanceToUpstream (10); // set the upstream node 10m away.
+  // Set the parameters as set in the paper's simulation settings
+  energyModel2->SetB1Constant (0.0013e-12);
+  energyModel2->SetB2Coefficient (50e-9);
+  energyModel2->SetAPathLossIndex (4);
+  energyModel2->SetRhoReceiveConstant(50e-9);
 
-  source->AppendDeviceEnergyModel (energyModel);
+  source1->AppendDeviceEnergyModel (energyModel1);
+  source2->AppendDeviceEnergyModel (energyModel2);
 
+  
   //register a listener so the energyModel knows when to update the battery level
-  device->SetSendCallback (energyModel->GetIotNetDeviceSendCallback ());
+  device1->SetSendCallback (energyModel1->GetIotNetDeviceSendCallback ());
+  device2->SetReceiveCallback (energyModel2->GetIotNetDeviceReceiveCallback());
 
+  
   /* Simulation */
-  device->Send (packet, address, 0);
+  device1->Send (packet, address2, 0);
   Simulator::Run();
 
   /* Asserts */
   // We've sent a packet of 10bytes over a distance of 10m with b1, b2 and a
   // respectively: 1.3e-15, 50e-9 and 4.
   // Total amount of energy spent should be 0.0013e-12*80 + 50e-9*10^4 = 0.04J
-  double energyLeft = source->GetRemainingEnergy();
-  NS_TEST_ASSERT_MSG_EQ (energyLeft, 10800-0.04, "The energy amount was not correctly handled after 1 packet");
+  double energyLeft1 = source1->GetRemainingEnergy();
+  NS_TEST_ASSERT_MSG_EQ (energyLeft1, 10800-0.04, "The energy amount was not correctly handled after 1 packet");
+  
+  // For receiving node 2 should've used 80b * 50e-9J/b = 4e-6
+  double energyLeft2 = source2->GetRemainingEnergy();
+  NS_TEST_ASSERT_MSG_EQ (energyLeft2, 10800-4e-6, "The energy amount was not correctly handled after 1 packet");
 }
 
 

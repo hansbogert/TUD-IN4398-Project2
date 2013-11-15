@@ -32,11 +32,16 @@ public:
   virtual void 	SetEnergySource (Ptr< EnergySource > source);
   IotEnergyModelDeviceListener * GetDeviceListener (void);
   IotNetDevice::SendCallback GetIotNetDeviceSendCallback (void);
+  IotNetDevice::ReceiveCallback GetIotNetDeviceReceiveCallback (void);
+
   bool IotNetDeviceSendCallback (Ptr<NetDevice>, Ptr<Packet> p, const Address& dest, uint16_t protocol);
+  bool IotNetDeviceReceiveCallback (Ptr<NetDevice>, Ptr<const Packet> p,  uint16_t protocol, const Address& dest);
   virtual void SetDistanceToUpstream (double distance); // in meters
   virtual void SetB1Constant (double b1); // in J
   virtual void SetB2Coefficient (double b2); // in J
   virtual void SetAPathLossIndex (double a); // Loss index, see paper
+  virtual void SetRhoReceiveConstant (double a); // cost for receiving bits, see paper
+
 
 private:
   //virtual double DoGetCurrentA (void) const;
@@ -55,6 +60,7 @@ private:
   double m_b1Constant; //in J/b
   double m_b2Coefficient; //in J/(b/m^4)
   double m_aPathLossIndex;
+  double m_rhoReceiveConstant;
 };
 } // namespace ns3
 #endif /* IOT_ENERGY_MODEL_H */
