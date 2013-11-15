@@ -20,7 +20,7 @@ Now you must reconfigure NS3 to incorporate the module:
 
 Afterwards it the specific 'iot' module can be tested by issuing:
 ````
-./test.ph -s iot
+./test.py -s iot
 ````
 
 ## Document
