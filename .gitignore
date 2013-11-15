@@ -10,3 +10,5 @@ Project*.png
 
 #simply ignore
 papers/*
+*.pdf
+*!sync
