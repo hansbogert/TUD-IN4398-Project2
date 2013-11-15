@@ -336,7 +336,7 @@ http://www.nsnam.org/doxygen/wifi-radio-energy-model_8h_source.html#l00254[sourc
 code] ) that energy usage is per time-unit i.e. if the physical radio
 state is on, it is using energy according to the classical model of:
 
-latexmath:[$E = U.I.t$] (for example used
+latexmath:[$E = U\cdot I\cdot t$] (for example used
 http://www.nsnam.org/doxygen/model_2li-ion-energy-source_8cc_source.html#l00267[li-ion
 battery model] of NS3)
 
@@ -455,12 +455,12 @@ latexmath:[$\rho = J/b$]
 
 So in our unit test -- using the same energy parameters as the paper
 -- the amount of energy used by node1 is latexmath:[$80\cdot C_{ij} = 80 \cdot (\beta_1
-+ \beta_2 D_{ij}^a ) = 80 \cdot 0.0013.10^{-12} + 80 \cdot 50.10^{-9}.10^4 = 0.04J$]
++ \beta_2 D_{ij}^a ) = 80 \cdot 0.0013\cdot 10^{-12} + 80 \cdot 50\cdot 10^{-9}\cdot 10^4 = 0.04J$]
 
 In the same test we also assert that node2 uses energy for receiving
 according to paper's model. This means that for 10 bytes the energy
 usage for receiving should be latexmath:[$80b\cdot \rho = 80b\cdot
-50.10^{-9}J/b = 4.00\cdot 10^6J $ ]
+50\cdot 10^{-9}J/b = 4.00\cdot 10^6J $ ]
 
 The test can be found in
 https://github.com/hansbogert/TUD-IN4398-Project2/blob/master/ns3/src/iot/test/iot-test-suite.cc#L176[testsuite]
@@ -523,14 +523,14 @@ s.t.
 latexmath:[$\sum_{j\in \mathbb{N}}^{j\neq i} f_{ij} + f_{iB} - \sum_{k\in
 \mathbb{N}}^{k\neq i} f_{ki} = R_{i} $]
 
-latexmath:[$\rho . \sum_{k\in \mathbb{N}}^{k\neq i} f_{ki} + \sum_{j\in
-\mathbb{N}}^{j\neq i} C_{ij} . f_{ij} + C_{iB} . f_{iB} - p_{i} = 0$]
+latexmath:[$\rho \cdot \sum_{k\in \mathbb{N}}^{k\neq i} f_{ki} + \sum_{j\in
+\mathbb{N}}^{j\neq i} C_{ij} \cdot f_{ij} + C_{iB} \cdot f_{iB} - p_{i} = 0$]
 
 latexmath:[$\tau - \sum_{j\in N} \tau_i - \tau_{vac} = \tau_{tsp} $]
 
-latexmath:[$ \tau . p_i -U . \tau_i = 0$]
+latexmath:[$ \tau \cdot p_i -U \cdot \tau_i = 0$]
 
-latexmath:[$(\tau - \tau_i) . p_i \leq E_{max} - E_{min} $]
+latexmath:[$(\tau - \tau_i) \cdot p_i \leq E_{max} - E_{min} $]
 
 where
 
