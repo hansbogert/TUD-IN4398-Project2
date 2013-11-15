@@ -268,7 +268,7 @@ void IotTestCaseEnergy::DoRun(void )
   double energyLeft1 = source1->GetRemainingEnergy();
   NS_TEST_ASSERT_MSG_EQ (energyLeft1, 10800-0.04, "The energy amount was not correctly handled after 1 packet");
   
-  // For receiving, node2 should've used 80b * 50e-9J/b = 4e-6
+  // For receiving, node2 should've used 80b * 50e-9J/b = 4e-6J
   double energyLeft2 = source2->GetRemainingEnergy();
   NS_TEST_ASSERT_MSG_EQ (energyLeft2, 10800-4e-6, "The energy amount was not correctly handled after 1 packet");
 }
