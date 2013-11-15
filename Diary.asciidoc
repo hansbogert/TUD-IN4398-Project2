@@ -7,7 +7,7 @@
 | 12 sept | H      | Read paper                      | 2h
 | 18 sept | H      | Make presentation               | 3h
 | 19 sept | H      | Attend lecture                  | 2h
-| 19 sept | H      | install and read through manual | 1h
+| 19 sept | H      | install and read through manual | 2h
 | 22 sept | H      | Looked through "tutorial" http://www.slideshare.net/mathieu_lacage/ns3-tutorial 
                                                      | 1
 | 23 sept | H      | Looked up smart pointers        | 0.5h
@@ -27,7 +27,7 @@
                                                      | 2.5         
 | 3 oct   | H      | Beginning of Project doc        | 0.5
 | 3 oct   | H      | Lecture                         | 2
-| 7 oct   | H      | Some extra document             | 1
+| 7 oct   | H      | Some extra documentation        | 1
 | 8-10 oc | H      | Reread the paper in depth       | 3,5
 | 10      | H      | Lecture                         | 2
 | 11-14   | H      | How to integrate concorde       | 4
@@ -35,6 +35,19 @@
 | 17      | H      | lecture                         | 2              
 | 19-21   | H      | Make initial code for 50 sim    | 9
 | 24 oct  | H      | Lecture Niels, wifi             | 2
+| 24 oct  | H      | Talk with VP and Meeting with Przemek - redoing simulation not the way forward, pick 1 or 2 subthings
+                                                     | 1
 | 28 oct  | H      | small review of the Project.adoc and initial attempt for dependency graph
                                                      | 2 
+| 6 nov   | H      | Added some text about batteries | 0.5
+| 11 nov  | H      | Redo the source as a module and make it compile on various plaforms (OSX and linux)
+                                                     | 10
+| 12 nov  | H      | Setup tests according the NS3 way. and implemented first testcase
+                                                     | 8
+| 13 nov  | H      | Corrected first test case and began implementation of energy and portion of 1 testcase - added copyright where applicable for compliance to GPL - made README for github explaining howto incorporate
+                                                     | 9
+| 14 nov   | H      | completed 1st energy test, infrastructure for energy spending complete, had to do our version of energy source
+                                                     | 7
+| 15 nov   | H      | Completing documentation: Project-file, adding more tests
+                                                     | 13
 |===
