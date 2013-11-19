@@ -2,6 +2,13 @@
 Hans v/d Bogert <hansbogert@gmail.com>
 15-11-2013
 
+== Preface
+
+This document is built using Asciidoc. For expressing formulas,
+Asciidoc uses a MathML backend, however MathML is not _yet_ supported
+well on mobile platforms at time of writing, thus your experience may
+vary.
+
 :numbered:
 == Introduction
 
