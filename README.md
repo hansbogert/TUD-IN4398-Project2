@@ -1,4 +1,6 @@
-#TUD-IN4398-Project2
+# TUD-IN4398-Project2
+NOTE: Code no longer compiles with NS-3 >3.20
+
 
 This is the source code for the IoT (Internet of things) Seminar
 @TUDelft, course: IN4398
